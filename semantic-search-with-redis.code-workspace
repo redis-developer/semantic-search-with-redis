@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "name": "server",
+      "path": "art-deco-server"
+    },
+    {
+      "name": "loader",
+      "path": "art-deco-loader"
+    },
+    {
+      "name": "client",
+      "path": "art-deco-client"
+    }
+  ],
+  "settings": {}
+}
