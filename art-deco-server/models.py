@@ -1,21 +1,25 @@
 from pydantic import BaseModel
 
 
-class Id(BaseModel):
-    id: str
+class ItemId(BaseModel):
+    ulid: str
 
 
-class Title(BaseModel):
+class ItemTitle(BaseModel):
     title: str
 
 
-class Author(BaseModel):
+class ItemAuthor(BaseModel):
     author: str
 
 
-class Description(BaseModel):
+class ItemDescription(BaseModel):
     description: str
 
 
-class Item(Id, Title, Author, Description):
+class Item(ItemId, ItemTitle, ItemAuthor, ItemDescription):
     pass
+
+
+class SearchItem(Item):
+    score: float
