@@ -5,21 +5,12 @@ class ItemId(BaseModel):
     ulid: str
 
 
-class ItemTitle(BaseModel):
+class Item(ItemId):
     title: str
-
-
-class ItemAuthor(BaseModel):
     author: str
+    image_url: str
+    embedding: str
 
 
-class ItemDescription(BaseModel):
-    description: str
-
-
-class Item(ItemId, ItemTitle, ItemAuthor, ItemDescription):
-    pass
-
-
-class SearchItem(Item):
+class ItemWithScore(Item):
     score: float

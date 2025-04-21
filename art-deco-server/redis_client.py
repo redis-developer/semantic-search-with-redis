@@ -18,7 +18,6 @@ definition = IndexDefinition(prefix=prefixes, index_type=index_type)
 schema = (
     TextField("title"),
     TextField("author"),
-    TextField("description"),
     VectorField(
         "embedding",
         "FLAT",
