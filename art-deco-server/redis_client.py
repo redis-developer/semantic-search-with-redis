@@ -4,10 +4,10 @@ from redis.commands.search.field import TextField, VectorField
 from redis.commands.search.indexDefinition import IndexDefinition, IndexType
 
 
-db = redis.Redis(host="localhost", port=6379, decode_responses=False)
+db = redis.Redis(host="localhost", port=6379, protocol=3, decode_responses=False)
 
 # the name of the index
-index_name = "idx:items"
+index_name = "item:index"
 
 # the index definition
 prefixes = ["item:"]

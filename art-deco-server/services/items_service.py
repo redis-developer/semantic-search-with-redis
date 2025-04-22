@@ -1,4 +1,6 @@
 import base64
+import codecs
+import sys
 
 from redis.commands.search.query import Query
 from ulid import ULID
@@ -59,24 +61,37 @@ class ItemsService:
             "ulid", "title", "author", "image_url", "embedding", "score"
         )
         query.paging(0, 5)
-        query.dialect(2)
+        query.dialect(3)
 
         bytes = base64.b64decode(embedding)
         query_params = {"blob": bytes}
 
-        results = self.redis.ft("idx:items").search(query, query_params)
+        response = self.redis.ft("item:index").search(query, query_params)
+        results = response[b"results"]
 
-        return [
-            ItemWithScore(
-                ulid=result.ulid,
-                title=result.title,
-                author=result.author,
-                image_url=result.image_url,
-                embedding=result.embedding,
-                score=result.score,
+        found_items = []
+
+        for result in results:
+            attributes = result[b"extra_attributes"]
+            ulid = attributes[b"ulid"].decode("utf-8")
+            title = attributes[b"title"].decode("utf-8")
+            author = attributes[b"author"].decode("utf-8")
+            image_url = attributes[b"image_url"].decode("utf-8")
+            embedding = attributes[b"embedding"]
+            score = attributes[b"score"]
+
+            found_items.append(
+                ItemWithScore(
+                    ulid=ulid,
+                    title=title,
+                    author=author,
+                    image_url=image_url,
+                    embedding=base64.b64encode(embedding).decode("utf-8"),
+                    score=score,
+                )
             )
-            for result in results.docs
-        ]
+
+        return found_items
 
     def item_exists(self, ulid: str) -> bool:
         return self.redis.exists(self.key(ulid)) > 0
@@ -84,6 +99,7 @@ class ItemsService:
     def save_to_redis(
         self, ulid: str, title: str, author: str, image_url: str, embedding: str
     ) -> Item:
+
         self.redis.hset(
             self.key(ulid),
             mapping={
