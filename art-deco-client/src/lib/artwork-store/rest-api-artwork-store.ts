@@ -4,7 +4,7 @@ import type ArtworkStore from '@lib/artwork-store/artwork-store'
 type JsonArtwork = {
   ulid: string
   title: string
-  artist: string
+  author: string
   image_url: string
 }
 
@@ -84,7 +84,7 @@ export default class RestApiArtworkStore implements ArtworkStore {
     return {
       id: json.ulid,
       title: json.title,
-      author: json.artist,
+      author: json.author,
       url: json.image_url
     }
   }
