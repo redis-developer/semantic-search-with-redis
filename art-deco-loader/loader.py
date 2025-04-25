@@ -7,7 +7,7 @@ import torch
 from transformers import CLIPProcessor, CLIPModel
 from PIL import Image
 
-sample_count = 5000
+# sample_count = 5000
 
 # Load the processor and model
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
@@ -16,7 +16,7 @@ model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 # Load the data and pull out some samples
 data = pd.read_csv('artwork-data.csv')
 # data = data.head(sample_count)
-data = data.sample(sample_count)
+# data = data.sample(sample_count)
 
 # loop through the selected rows
 for index, row in data.iterrows():
@@ -26,8 +26,12 @@ for index, row in data.iterrows():
     image_url = row['image_url']
 
     # Preprocess image
-    image = Image.open(requests.get(image_url, stream=True).raw)
-    inputs = processor(images=image, return_tensors="pt")
+    try:
+      image = Image.open(requests.get(image_url, stream=True).raw)
+      inputs = processor(images=image, return_tensors="pt")
+    except Exception as e:
+      print(f"Error processing image {image_url}: {e}")
+      continue
 
     # Extract image embedding (batch_size x 512)
     with torch.no_grad():
@@ -52,6 +56,5 @@ for index, row in data.iterrows():
         },
     )
 
-    print(response.status_code)
-    print(response.json())
+    print(response.status_code, response.json()['image_url'])
 
