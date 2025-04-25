@@ -1,8 +1,13 @@
 <script lang="ts">
-  let { imageUrl } = $props()
-  const firstUrl = imageUrl
+  import artworkSearcher from '@lib/searcher/svelte-artwork-searcher.svelte'
+
+  let { clazz = '' } = $props()
+
+  const imageUrl = $derived(() => artworkSearcher.selectedImageUrl)
 </script>
 
-<div class="w-134 h-134 bg-redis-black-90 flex justify-center items-center p-8">
-  <img class="max-w-full max-h-full object-contain {imageUrl === firstUrl ? 'p-32' : ''}" src={imageUrl} alt="" />
+<div
+  class="bg-redis-black-90 flex justify-center items-center bg-center bg-no-repeat bg-[length:50px] bg-[url(/redis-social.svg)] p-8 {clazz}"
+>
+  <img class="max-w-full max-h-full" src={imageUrl()} alt="" />
 </div>
