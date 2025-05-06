@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Artwork } from '@/lib/art-deco-types'
+  import type { Artwork } from '@lib/art-deco-types'
 
   interface Props {
     artwork: Artwork | null
