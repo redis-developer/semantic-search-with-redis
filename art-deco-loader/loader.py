@@ -7,18 +7,14 @@ import torch
 from transformers import CLIPProcessor, CLIPModel
 from PIL import Image
 
-# sample_count = 5000
-
 # Load the processor and model
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 
-# Load the data and pull out some samples
+# Load the data
 data = pd.read_csv('artwork-data.csv')
-# data = data.head(sample_count)
-# data = data.sample(sample_count)
 
-# loop through the selected rows
+# loop through the rows
 for index, row in data.iterrows():
     # Extract the values from the row
     title = row['title']
