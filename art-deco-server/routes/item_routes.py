@@ -15,7 +15,8 @@ def create_item(
     image_url: str = Form(...),
     embedding: str = Form(...),
 ):
-    return items.add(
+    # create a new item and return it
+    return items.create(
         title=title,
         author=author,
         image_url=image_url,
@@ -24,9 +25,15 @@ def create_item(
 
 
 @router.get("/{ulid}", response_model=Item)
-def get_item(ulid: str):
-    if (item := items.get(ulid)) is None:
+def read_item(ulid: str):
+    # read an item by its ulid
+    item = items.read(ulid)
+
+    # if the item is not found, raise a 404 error
+    if item is None:
         raise HTTPException(status_code=404, detail="Item not found")
+
+    # return the item
     return item
 
 
@@ -38,6 +45,7 @@ def update_item(
     image_url: str = Form(...),
     embedding: str = Form(...),
 ):
+    # update an item by its ulid
     updated_item = items.update(
         ulid=ulid,
         title=title,
@@ -46,19 +54,28 @@ def update_item(
         embedding=embedding,
     )
 
+    # if the item was not found, raise a 404 error
     if updated_item is None:
         raise HTTPException(status_code=404, detail="Item not found")
+
+    # return the updated item
     return updated_item
 
 
 @router.delete("/{ulid}", response_model=ItemId)
 def delete_item(ulid: str):
+    # delete an item by its ulid
     deleted = items.delete(ulid)
+
+    # if the item was not found, raise a 404 error
     if deleted is None:
         raise HTTPException(status_code=404, detail="Item not found")
+
+    # return the deleted item ID
     return deleted
 
 
 @router.post("/search", response_model=list[ItemWithScore])
 def search_items(embedding: str = Form(...)):
+    # search for items based on the embedding
     return items.search(embedding)
