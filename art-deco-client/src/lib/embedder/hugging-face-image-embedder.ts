@@ -12,9 +12,9 @@ export default class HuggingFaceImageEmbedder implements ImageEmbedder {
 
   /* create an instance with default feature extractor */
   static async create(): Promise<ImageEmbedder> {
-    const featureExtractor = (await pipeline('image-feature-extraction', 'Xenova/clip-vit-base-patch32', {
+    const featureExtractor = await pipeline('image-feature-extraction', 'Xenova/clip-vit-base-patch32', {
       dtype: 'fp32'
-    })) as unknown as ImageFeatureExtractionPipeline
+    })
 
     return new HuggingFaceImageEmbedder(featureExtractor)
   }
