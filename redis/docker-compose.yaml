@@ -1,6 +1,6 @@
 services:
   redis:
-    image: redis:8.0-rc1
+    image: redis:latest
     container_name: artwork-redis
     ports:
       - "6379:6379"
