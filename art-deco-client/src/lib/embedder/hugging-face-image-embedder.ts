@@ -28,9 +28,16 @@ export default class HuggingFaceImageEmbedder implements ImageEmbedder {
 
   /* embed the image url and return the bytes */
   private async embedImage(url: string): Promise<Uint8Array> {
+    /* Extract the image features */
     const tensor = await this.featureExtractor(url)
     const embedding = tensor.data as Float32Array
-    const embeddingBytes = new Uint8Array(embedding.buffer)
+
+    /* Normalize the embedding */
+    const norm = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0))
+    const normalizedEmbedding = embedding.map(val => val / norm)
+
+    /* Return the embedding bytes */
+    const embeddingBytes = new Uint8Array(normalizedEmbedding.buffer)
     return embeddingBytes
   }
 
