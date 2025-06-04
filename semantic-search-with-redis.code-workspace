@@ -4,6 +4,10 @@
       "path": "."
     },
     {
+      "name": "redis",
+      "path": "redis"
+    },
+    {
       "name": "server",
       "path": "art-deco-server"
     },
