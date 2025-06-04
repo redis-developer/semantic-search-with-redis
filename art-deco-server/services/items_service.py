@@ -122,7 +122,7 @@ class ItemsService:
         # Iterate through the results and extract the relevant fields
         # and convert them to the ItemWithScore model
         for result in results:
-            # get there attributes from the result
+            # get the attributes from the result
             attributes = result[b"extra_attributes"]
 
             # get the desired attributes
